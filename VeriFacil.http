@@ -1,0 +1,6 @@
+@VeriFacil_HostAddress = http://localhost:5170
+
+GET {{VeriFacil_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

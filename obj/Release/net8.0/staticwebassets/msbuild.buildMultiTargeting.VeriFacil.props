@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\VeriFacil.props" />
+</Project>
