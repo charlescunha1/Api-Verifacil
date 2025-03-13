@@ -1,23 +1,29 @@
 ﻿using System.Text.RegularExpressions;
 using VeriFacil.Application.Interface;
+using VeriFacil.Application.ViewModel;
+using VeriFacil.Service.Exceptions;
 
 namespace VeriFacil.Application.AppService;
 
 public class EmailAppService : IEmailAppService
 {
-    public string ValidarEmail(string email)
+    public EmailResponseViewModel ValidarEmail(EmailRequestViewModel request)
     {
-        var emailSemEspacos = LimparEspacosEmBrancoDoEmail(email);
+        ValidarNulidadeEmail(request.Email);
+        var emailSemEspacos = RetirarEspacosEmBrancoDoEmail(request.Email);
         if (!EmailEhValido(emailSemEspacos))
         {
-            throw new ArgumentException("Email com formato inválido.");
+            throw EmailExceptions.EmailFormatoInvalido();
         }
-        return emailSemEspacos;
+        return new EmailResponseViewModel(emailSemEspacos);
     }
 
     private bool EmailEhValido(string email)
     {
-        if (string.IsNullOrWhiteSpace(email)) return false;
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw EmailExceptions.EmailVazioOuNulo();
+        }
 
         try
         {
@@ -25,8 +31,7 @@ public class EmailAppService : IEmailAppService
             email = Regex.Replace(email, @"(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
 
             // Retorna verdadeiro se o email é válido e o domínio foi normalizado corretamente
-            var emailEhValido = Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-            return emailEhValido;
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
         }
         catch (RegexMatchTimeoutException)
         {
@@ -34,7 +39,7 @@ public class EmailAppService : IEmailAppService
         }
         catch (ArgumentException)
         {
-            return false;
+            throw EmailExceptions.EmailFormatoInvalido();
         }
     }
 
@@ -50,16 +55,21 @@ public class EmailAppService : IEmailAppService
         }
         catch (ArgumentException)
         {
-            throw new ArgumentException("Domínio inválido.");
+            throw EmailExceptions.EmailFormatoInvalido();
         }
-        var email = match.Groups[1].Value + domainName;
-        return email;
+        return match.Groups[1].Value + domainName;
     }
 
-    private string LimparEspacosEmBrancoDoEmail(string email)
+    private string RetirarEspacosEmBrancoDoEmail(string email)
     {
-        var emailSemEspaço = Regex.Replace(email, @"\s+", ""); // Remove todos os espaços em branco
-        return emailSemEspaço;
+        return Regex.Replace(email, @"\s+", "");
+    }
+
+    private void ValidarNulidadeEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            throw EmailExceptions.EmailVazioOuNulo();
+        }
     }
 }
-

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\charl\\Documents\\VeriFacil\\VeriFacil.csproj": {}
+    "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {}
   },
   "projects": {
-    "C:\\Users\\charl\\Documents\\VeriFacil\\VeriFacil.csproj": {
+    "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\charl\\Documents\\VeriFacil\\VeriFacil.csproj",
+        "projectUniqueName": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
         "projectName": "VeriFacil",
-        "projectPath": "C:\\Users\\charl\\Documents\\VeriFacil\\VeriFacil.csproj",
-        "packagesPath": "C:\\Users\\charl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\charl\\Documents\\VeriFacil\\obj\\",
+        "projectPath": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\charl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -40,8 +40,11 @@
           ]
         },
         "restoreAuditProperties": {
-          "enableAudit": "default"
-        }
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -99,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

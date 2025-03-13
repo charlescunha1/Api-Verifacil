@@ -1,6 +1,8 @@
-﻿namespace VeriFacil.Application.Interface;
+﻿using VeriFacil.Application.ViewModel;
+
+namespace VeriFacil.Application.Interface;
 
 public interface INumeroCelularAppService
 {
-    public string ValidarNumeroCelular(string numeroCelular);
+    public CelularResponseViewModel ValidarNumeroCelular(CelularRequestViewModel request);
 }

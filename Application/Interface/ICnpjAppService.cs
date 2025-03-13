@@ -1,8 +1,9 @@
-﻿using VeriFacil.Domain.Enum;
+﻿using VeriFacil.Application.ViewModel;
+using VeriFacil.Domain.Enum;
 
 namespace VeriFacil.Application.Interface;
 
 public interface ICnpjAppService
 {
-    public string ValidarCnpj(string numeroCnpj, FormatoCnpj? formatoCnpj);
+    public CnpjResponseViewModel ValidarCnpj(CnpjRequestViewModel request);
 }

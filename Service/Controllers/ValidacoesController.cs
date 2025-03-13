@@ -1,88 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VeriFacil.Application.Interface;
+using VeriFacil.Application.ViewModel;
 using VeriFacil.Domain.Enum;
 
-namespace VeriFacil.Controllers
+namespace VeriFacil.Service.Controllers;
+
+[Route("api/v1/validar")]
+public class ValidacoesController(INumeroCelularAppService appService, ICnpjAppService cnpjAppService,
+ICpfAppService cpfAppService, IEmailAppService emailAppService) : BaseController()
 {
-    [Route("api/Validacoes")]
-    public class ValidacoesController : ControllerBase
+    [HttpPost]
+    [Route("celular")]
+    public IActionResult ValidarNumeroCelular([FromBody] CelularRequestViewModel request)
     {
-        private INumeroCelularAppService _appService;
-        private ICnpjAppService _cnpjAppService;
-        private ICpfAppService _cpfAppService;
-        private IEmailAppService _emailAppService;
-        public ValidacoesController( ILogger<ValidacoesController> logger,
-        INumeroCelularAppService appService, ICnpjAppService cnpjAppService,
-        ICpfAppService cpfAppService, IEmailAppService emailAppService) : base( )
-        {
-            _appService = appService;
-            _cnpjAppService = cnpjAppService;
-            _cpfAppService = cpfAppService;
-            _emailAppService = emailAppService;
-        }
+        return ExecutarValidacao(() => appService.ValidarNumeroCelular(request));
+    }
 
-        [HttpGet]
-        [Route("NumeroCelular")]
-        public IActionResult ValidarNumeroCelular([FromQuery] string numeroCelular)
-        {
-            string numero;
-            try
-            {
-                numero = _appService.ValidarNumeroCelular(numeroCelular);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok(numero);
-        }
+    [HttpPost]
+    [Route("cnpj")]
+    public IActionResult ValidarCnpj([FromBody] CnpjRequestViewModel request)
+    {
+        return ExecutarValidacao(() => cnpjAppService.ValidarCnpj(request));
+    }
 
-        [HttpGet]
-        [Route("Cnpj")]
-        public IActionResult ValidarCnpj([FromQuery] string numeroCnpj,[FromQuery] FormatoCnpj? tipoCnpj)
-        {
-            string numero;
-            try
-            {
-                numero = _cnpjAppService.ValidarCnpj(numeroCnpj, tipoCnpj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok(numero);
-        }
+    [HttpPost]
+    [Route("cpf")]
+    public IActionResult ValidarCpf([FromBody] CpfRequestViewModel request)
+    {
+        return ExecutarValidacao(() => cpfAppService.ValidarCpf(request));
+    }
 
-        [HttpGet]
-        [Route("Cpf")]
-        public IActionResult ValidarCpf([FromQuery] string numeroCpf, [FromQuery] FormatoCpf? formatoCpf)
-        {
-            string numero;
-            try
-            {
-                numero = _cpfAppService.ValidarCpf(numeroCpf, formatoCpf);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok(numero);
-        }
-
-        [HttpGet]
-        [Route("Email")]
-        public IActionResult ValidarEmail([FromQuery] string email)
-        {
-            string emailValido;
-            try
-            {
-                emailValido = _emailAppService.ValidarEmail(email);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok(emailValido);
-        }
+    [HttpPost]
+    [Route("email")]
+    public IActionResult ValidarEmail([FromBody] EmailRequestViewModel request)
+    {
+        return ExecutarValidacao(() => emailAppService.ValidarEmail(request));
     }
 }

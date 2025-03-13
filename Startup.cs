@@ -15,19 +15,24 @@ namespace VeriFacil
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers(); // Map controllers
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             // Add services to the container.
-
             services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+            // Add Swagger for API documentation
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            // Registering the application services
             services.AddScoped<INumeroCelularAppService, NumeroCelularAppService>();
             services.AddScoped<ICnpjAppService, CnpjAppService>();
             services.AddScoped<ICpfAppService, CpfAppService>();

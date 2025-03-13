@@ -1,68 +1,86 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using VeriFacil.Application.Interface;
+using VeriFacil.Application.ViewModel;
 using VeriFacil.Domain.Enum;
+using VeriFacil.Service.Exceptions;
 
 namespace VeriFacil.Application.AppService;
 
 public class CpfAppService : ICpfAppService
 {
-    public string ValidarCpf(string numeroCpf, FormatoCpf? formatoCpf)
+    public CpfResponseViewModel ValidarCpf(CpfRequestViewModel request)
     {
-        ValidarExistenciadeLetras(numeroCpf);
-        if (string.IsNullOrEmpty(numeroCpf))
+        ValidarTamahoCPF(request.Cpf);
+        ValidarExistenciaDeLetras(request.Cpf);
+
+        if (request.Cpf.Distinct().Count() == 1)
         {
-            throw new Exception("Insira um CPF válido.");
+            throw CpfExceptions.CpfInvalido();
         }
 
-        string cpf = new string(numeroCpf.Where(char.IsDigit).ToArray());
-        if (cpf.Length == 11)
+        string cpf = new string(request.Cpf.Where(char.IsDigit).ToArray());
+
+        int sum = 0;
+        for (int i = 0; i < 9; i++)
+            sum += int.Parse(cpf[i].ToString()) * (10 - i);
+        int rev = 11 - (sum % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != int.Parse(cpf[9].ToString()))
         {
-            int sum = 0;
-            for (int i = 0; i < 9; i++)
-                sum += int.Parse(cpf[i].ToString()) * (10 - i);
-            int rev = 11 - (sum % 11);
-            if (rev == 10 || rev == 11) rev = 0;
-            if (rev != int.Parse(cpf[9].ToString())) return "CPF inválido";
-
-            sum = 0;
-            for (int i = 0; i < 10; i++)
-                sum += int.Parse(cpf[i].ToString()) * (11 - i);
-            rev = 11 - (sum % 11);
-            if (rev == 10 || rev == 11) rev = 0;
-            if (rev != int.Parse(cpf[10].ToString())) return "CPF inválido";
-
-            if (formatoCpf == FormatoCpf.FormatoOriginal)
-            {
-              var numeroComMascara =  FormatarComMascaraCpf(numeroCpf);
-                return numeroComMascara;
-            }
+            throw CpfExceptions.CpfInvalido();
         }
-        return cpf;
+
+        sum = 0;
+        for (int i = 0; i < 10; i++)
+            sum += int.Parse(cpf[i].ToString()) * (11 - i);
+        rev = 11 - (sum % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != int.Parse(cpf[10].ToString()))
+        {
+            throw CpfExceptions.CpfInvalido();
+        }
+
+        if (request.FormatoCpf == FormatoCpf.FormatoOriginal)
+        {
+            return new CpfResponseViewModel(MascararCPF(request.Cpf));
+        }
+        return new CpfResponseViewModel(cpf);
     }
 
-    private string FormatarComMascaraCpf(string numeroCpf)
+    private void ValidarExistenciaDeLetras(string numero)
     {
-        var baa = ValidarExistenciadeLetras(numeroCpf);
-        if (baa.Length != 11)
+        if (Regex.IsMatch(numero, @"[a-zA-Z]"))
         {
-            throw new ArgumentException("O CPF deve ter exatamente 11 dígitos.");
+            throw CpfExceptions.CpfComLetras();
         }
-        // Aplica a formatação do CPF: 000.000.000-00
+    }
+
+    private void ValidarTamahoCPF(string numero)
+    {
+        if (string.IsNullOrEmpty(numero))
+        {
+            throw CpfExceptions.CpfVazioOuNulo();
+        }
+
+        var cpf = RemoverCaracteresEspeciais(numero);
+
+        if (cpf.Length != 11)
+        {
+            throw CpfExceptions.CpfTamanhoInvalido();
+        }
+    }
+
+    private string RemoverCaracteresEspeciais(string numero)
+    {
+        return Regex.Replace(numero, @"\D", "");
+    }
+
+    private string MascararCPF(string Cpf)
+    {
         return string.Format("{0}.{1}.{2}-{3}",
-            baa.Substring(0, 3),  // Primeiros 3 dígitos
-            baa.Substring(3, 3),  // Próximos 3 dígitos
-            baa.Substring(6, 3),  // Próximos 3 dígitos
-            baa.Substring(9, 2)); // Últimos 2 dígitos
-    }
-
-    private string ValidarExistenciadeLetras(string numero)
-    {
-        string apenasDigitos = Regex.Replace(numero, @"[^\d]", "");
-        if(apenasDigitos.Any(c => !char.IsDigit(c)))
-        {
-            throw new Exception("O CPF não deve conter letras.");
-        }
-        return apenasDigitos;
+            Cpf.Substring(0, 3),
+            Cpf.Substring(3, 3),
+            Cpf.Substring(6, 3),
+            Cpf.Substring(9, 2));
     }
 }

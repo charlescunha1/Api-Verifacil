@@ -1,32 +1,47 @@
 ﻿using System.Text.RegularExpressions;
 using VeriFacil.Application.Interface;
+using VeriFacil.Application.ViewModel;
+using VeriFacil.Service.Exceptions;
 
 namespace VeriFacil.Application.AppService;
 
 public class NumeroCelularAppService : INumeroCelularAppService
 {
-    public string ValidarNumeroCelular(string numeroCelular)
+    public CelularResponseViewModel ValidarNumeroCelular(CelularRequestViewModel request)
     {
-        var numeroCelularFormatado = FormatarNumeroCelular(numeroCelular);
-        return numeroCelularFormatado;
+        ValidarNulidadeCelular(request.NumeroCelular);
+        ValidarExistenciaDeLetras(request.NumeroCelular);
+        ValidarTamahoNumeroCelular(request.NumeroCelular);
+        return new CelularResponseViewModel(request.NumeroCelular);
     }
 
-    private string FormatarNumeroCelular(string numero)
+    private void ValidarTamahoNumeroCelular(string numero)
     {
-        string apenasDigitos = Regex.Replace(numero, @"[^\d]", "");
-        if (apenasDigitos.Length != 11)
+        numero = RemoverCaracteresEspeciais(numero);
+
+        if (numero.Length != 11)
         {
-            throw new Exception("O número deve conter exatamente 11 dígitos.");
+            throw NumeroCelularExceptions.NumeroCelularTamanhoInvalido();
         }
-        ValidarExistenciaDeLetras(apenasDigitos);
-        return apenasDigitos;
+    }
+    private string RemoverCaracteresEspeciais(string numero)
+    {
+        return Regex.Replace(numero, @"[^\d]", "");
     }
 
-    private void ValidarExistenciaDeLetras(string apenasDigitos)
+    private void ValidarExistenciaDeLetras(string numero)
     {
-        if (int.TryParse(apenasDigitos, out int number))
+        if (Regex.IsMatch(numero, @"[a-zA-Z]"))
         {
-            throw new Exception("O número de celular não deve conter letras.");
+            throw NumeroCelularExceptions.NumeroCelularComLetras();
+        }
+    }
+
+    private void ValidarNulidadeCelular(string celular)
+    {
+        if (string.IsNullOrEmpty(celular))
+        {
+            throw NumeroCelularExceptions.NumeroCelularVazioOuNulo();
         }
     }
 }

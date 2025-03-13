@@ -1,6 +1,8 @@
-﻿namespace VeriFacil.Application.Interface;
+﻿using VeriFacil.Application.ViewModel;
+
+namespace VeriFacil.Application.Interface;
 
 public interface IEmailAppService
 {
-    public string ValidarEmail(string email);
+    public EmailResponseViewModel ValidarEmail(EmailRequestViewModel request);
 }
