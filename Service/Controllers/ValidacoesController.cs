@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VeriFacil.Application.Interface;
 using VeriFacil.Application.ViewModel;
-using VeriFacil.Domain.Enum;
 
 namespace VeriFacil.Service.Controllers;
 
 [Route("api/v1/validar")]
-public class ValidacoesController(INumeroCelularAppService appService, ICnpjAppService cnpjAppService,
-ICpfAppService cpfAppService, IEmailAppService emailAppService) : BaseController()
+public class ValidacoesController(
+    INumeroCelularAppService appService, 
+    ICnpjAppService cnpjAppService,
+    INovoCnpjAppService novoCnpjAppService,
+    ICpfAppService cpfAppService, 
+    IEmailAppService emailAppService, 
+    ICepAppService cepAppService, 
+    IRgAppService rgAppService,
+    ICnhAppService cnhAppService,
+    IPlacaVeiculoAppService placaVeiculoAppService) : BaseController()
 {
     [HttpPost]
     [Route("celular")]
@@ -24,6 +31,13 @@ ICpfAppService cpfAppService, IEmailAppService emailAppService) : BaseController
     }
 
     [HttpPost]
+    [Route("cnpj-alfanumerico")]
+    public IActionResult ValidarNovoCnpj([FromBody] CnpjRequestViewModel request)
+    {
+        return ExecutarValidacao(() => novoCnpjAppService.ValidarNovoCnpj(request));
+    }
+
+    [HttpPost]
     [Route("cpf")]
     public IActionResult ValidarCpf([FromBody] CpfRequestViewModel request)
     {
@@ -35,5 +49,32 @@ ICpfAppService cpfAppService, IEmailAppService emailAppService) : BaseController
     public IActionResult ValidarEmail([FromBody] EmailRequestViewModel request)
     {
         return ExecutarValidacao(() => emailAppService.ValidarEmail(request));
+    }
+
+    [HttpPost("cep")]
+    public async Task<IActionResult> ValidarCep([FromBody] CepRequestViewModel request)
+    {
+        return await ExecutarValidacaoAsync(() => cepAppService.ValidarCep(request));
+    }
+
+    [HttpPost]
+    [Route("rg")]
+    public IActionResult ValidarRg([FromBody] RgRequestViewModel request)
+    {
+        return ExecutarValidacao(() => rgAppService.ValidarRg(request));
+    }
+
+    [HttpPost]
+    [Route("cnh")]
+    public IActionResult ValidarCnh([FromBody] CnhRequestViewModel request)
+    {
+        return ExecutarValidacao(() => cnhAppService.ValidarCnh(request));
+    }
+
+    [HttpPost]
+    [Route("placa-veiculo")]
+    public IActionResult ValidarPlacaBVeiculo([FromBody] PlacaVeiculoRequestViewModel request)
+    {
+        return ExecutarValidacao(() => placaVeiculoAppService.ValidarPlacaVeiculo(request));
     }
 }

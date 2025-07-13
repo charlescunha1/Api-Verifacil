@@ -35,8 +35,16 @@ namespace VeriFacil
             // Registering the application services
             services.AddScoped<INumeroCelularAppService, NumeroCelularAppService>();
             services.AddScoped<ICnpjAppService, CnpjAppService>();
+            services.AddScoped<INovoCnpjAppService, NovoCnpjAppService>();
             services.AddScoped<ICpfAppService, CpfAppService>();
             services.AddScoped<IEmailAppService, EmailAppService>();
+            services.AddScoped<IRgAppService, RgAppService>();
+            services.AddScoped<ICnhAppService, CnhAppService>();
+            services.AddScoped<IPlacaVeiculoAppService, PlacaVeiculoAppService>();
+
+
+            // Registering the application services HttpClient
+            services.AddHttpClient<ICepAppService, CepAppService>();
         }
     }
 }

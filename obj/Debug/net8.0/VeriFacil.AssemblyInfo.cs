@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VeriFacil")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7d2ef5a102e533ba9bd1a7e3bc6d6ce6fde2540")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42f6867adeb14b0692c50b1eb534155b8a9f3b75")]
 [assembly: System.Reflection.AssemblyProductAttribute("VeriFacil")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VeriFacil")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

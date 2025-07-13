@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {}
+    "D:\\dados do ssd\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {}
   },
   "projects": {
-    "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {
+    "D:\\dados do ssd\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
+        "projectUniqueName": "D:\\dados do ssd\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
         "projectName": "VeriFacil",
-        "projectPath": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
+        "projectPath": "D:\\dados do ssd\\repositorios\\Api-Verifacil\\Api-Verifacil\\VeriFacil.csproj",
         "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-        "outputPath": "D:\\repositorios\\Api-Verifacil\\Api-Verifacil\\obj\\",
+        "outputPath": "D:\\dados do ssd\\repositorios\\Api-Verifacil\\Api-Verifacil\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,6 +69,18 @@
             "Amazon.Lambda.Serialization.SystemTextJson": {
               "target": "Package",
               "version": "[2.4.3, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.69.0, )"
+            },
+            "Google.Apis.Gmail.v1": {
+              "target": "Package",
+              "version": "[1.69.0.3742, )"
+            },
+            "Google.Apis.Oauth2.v2": {
+              "target": "Package",
+              "version": "[1.68.0.1869, )"
             },
             "NewRelic.OpenTracing.AmazonLambda.Tracer": {
               "target": "Package",

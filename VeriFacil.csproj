@@ -8,18 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\Controllers\AsyncBaseController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.7.0" />
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.0" />
     <PackageReference Include="Amazon.Lambda.Core" Version="2.2.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.3" />
     <PackageReference Include="AWSSDK.Core" Version="3.7.303.24" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.69.0.3742" />
+    <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
     <PackageReference Include="NewRelic.OpenTracing.AmazonLambda.Tracer" Version="1.3.1" />
     <PackageReference Include="OpenTracing" Version="0.12.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domain\Util\" />
   </ItemGroup>
 
 </Project>
